@@ -2,6 +2,7 @@ package contactBook;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.function.Predicate;
 
 public class ContactBook {
     static final int DEFAULT_SIZE = 100;
@@ -70,30 +71,30 @@ public class ContactBook {
         contacts[searchIndex(name)].setEmail(email);
     }
 
-    private int searchIndex(String name) {
+    /**
+     * Using a predicate to factor the search index (for all criteria wanted).
+     * @param predicate - the predicate used, takes a Contact and evaluates as wanted.
+     * @return the index of the Contact found, or -1 if not found.
+     */
+    private int searchIndex(Predicate<Contact> predicate) {
         int i = 0;
         int result = -1;
         boolean found = false;
         while (i<counter && !found)
-            if (contacts[i].getName().equals(name))
+            if (predicate.test(contacts[i]))
                 found = true;
             else
                 i++;
         if (found) result = i;
         return result;
     }
+
+    private int searchIndex(String name) {
+        return searchIndex(contact -> name.equals(contact.getName()));
+    }
     
     private int searchIndex(int number) {
-        int i = 0;
-        int result = -1;
-        boolean found = false;
-        while (i<counter && !found)
-            if (contacts[i].getPhone() == number)
-                found = true;
-            else
-                i++;
-        if (found) result = i;
-        return result;
+        return searchIndex(contact -> number == contact.getPhone());
     }
 
     private void resize() {
