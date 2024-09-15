@@ -43,6 +43,7 @@ public class Main {
                 case SET_PHONE		-> setPhone(in,cBook);
                 case SET_EMAIL		-> setEmail(in,cBook);
                 case LIST_CONTACTS	-> listAllContacts(cBook);
+                case GET_NAME 		-> getName(in, cBook);
                 default ->	System.out.println(COMMAND_ERROR);
             }
             System.out.println();
@@ -135,5 +136,14 @@ public class Main {
             }
         }
         else System.out.println(BOOK_EMPTY);
+    }
+    
+    private static void getName(Scanner in, ContactBook cBook) {
+    	int number;
+    	number = in.nextInt(); in.nextLine();
+    	if (cBook.hasContact(number)) {
+    		System.out.println(cBook.getName(number));
+    	}
+    	else System.out.println(PHONE_NUMBER_DOESNT_EXIST);
     }
 }
