@@ -1,6 +1,7 @@
 package contactBook;
 
-import contactBook.Contact;
+import java.util.Set;
+import java.util.HashSet;
 
 public class ContactBook {
     static final int DEFAULT_SIZE = 100;
@@ -115,4 +116,25 @@ public class ContactBook {
         return contacts[currentContact++];
     }
 
+    /**
+     * Iterates all the contacts of this cBook and uses a HashSet to check in constant time if the current phone number
+     * being iterated is already on the set. In this case, a previously iterated contact has the same phone number,
+     * which means there are at least two contacts with the same phone number (no need to keep iterating),
+     * and returns true.
+     * Otherwise, if we had to iterate through every phone number, then all phone numbers are different,
+     * and returns false.
+     */
+    public boolean hasEqualPhones() {
+        Set<Integer> phoneNumberFrequency = new HashSet<>();
+        int currentPhoneNumber;
+
+        initializeIterator();
+        while (hasNext()) {
+            currentPhoneNumber = next().getPhone();
+            if (!phoneNumberFrequency.add(currentPhoneNumber))
+                return true;
+        }
+
+        return false;
+    }
 }
