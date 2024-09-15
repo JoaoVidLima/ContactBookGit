@@ -1,6 +1,8 @@
 import contactBook.Contact;
 import contactBook.ContactBook;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -14,7 +16,7 @@ public class Main {
     public static final String SET_EMAIL      = "SE";
     public static final String LIST_CONTACTS  = "LC";
     public static final String GET_NAME = "GN";
-    public static final String EXISTING_PHONE = "EP";
+    public static final String EQUAL_PHONES = "EP";
     public static final String QUIT           = "Q";
 
     //Constantes que definem as mensagens para o utilizador
@@ -25,6 +27,7 @@ public class Main {
     public static final String CONTACT_UPDATED = "contactBook.Contact updated.";
     public static final String BOOK_EMPTY = "contactBook.Contact book empty.";
     public static final String PHONE_NUMBER_DOESNT_EXIST = "Phone number does not exist.";
+    public static final String EQUAL_PHONE_NUMBERS = "There are contacts that share phone numbers.";
     public static final String ALL_DIFFERENT_PHONE_NUMBERS = "All contacts have different phone numbers.";
     public static final String QUIT_MSG = "Goodbye!";
     public static final String COMMAND_ERROR = "Unknown command.";
@@ -38,12 +41,13 @@ public class Main {
             switch (comm) {
                 case ADD_CONTACT 	-> addContact(in,cBook);
                 case REMOVE_CONTACT -> deleteContact(in,cBook);
-                 case GET_PHONE		-> getPhone(in,cBook);
+                case GET_PHONE		-> getPhone(in,cBook);
                 case GET_EMAIL 		-> getEmail(in,cBook);
                 case SET_PHONE		-> setPhone(in,cBook);
                 case SET_EMAIL		-> setEmail(in,cBook);
                 case LIST_CONTACTS	-> listAllContacts(cBook);
                 case GET_NAME 		-> getName(in, cBook);
+                case EQUAL_PHONES -> checkEqualPhones(cBook);
                 default ->	System.out.println(COMMAND_ERROR);
             }
             System.out.println();
@@ -146,4 +150,36 @@ public class Main {
     	}
     	else System.out.println(PHONE_NUMBER_DOESNT_EXIST);
     }
+
+    //TODO Testar método!
+    /**
+     * Iterates all the contacts of the cBook and uses a hashMap to check in constant time if the current phone number
+     * beeing iterated is already on the hashMap, in that case a previously iterated contact have the same phone number,
+     * which means there are at least two contacts with the same phone number (no need to keep iterating).
+     * Otherwise, if we had to iterate through every phone number then all phone numbers are different.
+     * @param cBook - the ContackBook object.
+     */
+    private static void checkEqualPhones(ContactBook cBook) {
+        //Key: phoneNumber  Value: Number of times the phone number is found in the ContackBook
+        Map<Integer, Integer> phoneNumberFrequency = new HashMap<>();
+
+        boolean found = false;
+        int currentPhoneNumber;
+
+        cBook.initializeIterator();
+        while(cBook.hasNext() && !found){
+            currentPhoneNumber = cBook.next().getPhone();
+            if(!phoneNumberFrequency.containsKey(currentPhoneNumber))
+                phoneNumberFrequency.put(currentPhoneNumber, 1);
+            else
+                found = true;
+        }
+
+        if(!cBook.hasNext() && !found)
+            System.out.println(ALL_DIFFERENT_PHONE_NUMBERS);
+        else
+            System.out.println(EQUAL_PHONE_NUMBERS);
+    }
+
+
 }
