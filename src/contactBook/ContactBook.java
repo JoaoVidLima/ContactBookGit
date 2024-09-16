@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.function.Predicate;
 
 public class ContactBook {
-    static final int DEFAULT_SIZE = 100;
+    private static final int DEFAULT_SIZE = 100;
 
     private int counter;
     private Contact[] contacts;
