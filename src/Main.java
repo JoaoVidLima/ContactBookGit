@@ -3,9 +3,14 @@ import contactBook.ContactBook;
 
 import java.util.Scanner;
 
-
+/**
+ * It's the Main class of our application. It handles all the interactions with the user.
+ * @author António Mendes 66891 an.mendes@campus.fct.unl.pt
+ * @author Bernardo Gracioso 65284 b.gracioso@campus.fct.unl.pt
+ * @author João Lima 65491 jav.lima@campus.fct.unl.pt
+ */
 public class Main {
-    //Constantes que definem os comandos
+    // Constantes que definem os comandos
     public static final String ADD_CONTACT    = "AC";
     public static final String REMOVE_CONTACT = "RC";
     public static final String GET_PHONE      = "GP";
